@@ -1,0 +1,10 @@
+# Device and SDK traps, with evidence
+
+All observed on an Android foldable emulator (inner screen 852dp) and an iPad simulator (1032pt), Expo SDK 57, React Native 0.86, 18 Sep 2026. Native config changes between releases, so re-verify on your own versions. Items 1 to 3 were confirmed by inspecting generated files or running the app, not by reading docs.
+
+1. **iPad orientations.** Prebuild wrote `UISupportedInterfaceOrientations~ipad` with all four orientations, even with `orientation: "portrait"` in `app.json`, and `supportsTablet: true` means full screen. iPad landscape was reachable. Check the generated `Info.plist`.
+2. **Android orientation lock.** With `targetSdkVersion` 36 the manifest still carried `android:screenOrientation="portrait"`, and an app declaring portrait rendered landscape at 600dp and above. Android's documentation describes large-screen orientation restrictions being ignored from Android 16, with an opt-out that goes away at the next API level; read the current Android behaviour-changes page for your target.
+3. **Native tabs on Android.** At 852dp the bar stretched full width with items clustered mid-screen and no rail. On iPadOS the tabs adapted to a top-centred floating pill, not a side rail, until the sidebar option was set. Do not assume side-mounted navigation comes free on either platform.
+4. **Modal presentation differs.** iPad showed modal routes as inset sheets floating over the parent, which does part of the capping for you and punishes a second naive cap. Android showed the same route full-screen. The same code needs different assumptions per platform.
+5. **Odd column counts.** Three columns reads properly on a phone. Apple's guidance favours even counts so grids divide across a fold. Apply that at Medium and up only; letting it reach Compact breaks a layout that worked.
+6. **Fold state on Android.** A manifest with `screenSize|screenLayout|smallestScreenSize` in `configChanges` means the activity is not recreated on fold. A half-written draft and an open lightbox survived fold and unfold. The guarantee is structural and easy to break silently, so add a regression guard near it.
