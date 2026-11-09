@@ -1,0 +1,14 @@
+{
+  "name": "agent-skills",
+  "owner": { "name": "mattmuller" },
+  "metadata": { "description": "Agent skills for auditing and changing code safely." },
+  "plugins": [
+    {
+      "name": "state-machine-audit",
+      "description": "Find the implicit state machines in a codebase, write them down, and check them for six bug shapes.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/state-machine-audit"]
+    }
+  ]
+}

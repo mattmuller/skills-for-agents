@@ -1,0 +1,12 @@
+{
+  "skill_name": "state-machine-audit",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "audit-sample-app",
+      "prompt": "Audit the code in <APP> for bugs in how records move between states. For each problem say where it is, how a real user or job reaches it, and how serious it is. Write your findings to <OUT>/findings.md. Do not change any code.",
+      "expected_output": "findings.md listing the planted defects; see evals/answer-key.json",
+      "files": ["evals/sample-app"]
+    }
+  ]
+}

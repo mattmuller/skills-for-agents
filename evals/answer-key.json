@@ -1,0 +1,16 @@
+{
+  "note": "Eval runs get a copy of evals/sample-app only. This file never goes into their workspace.",
+  "planted": [
+    {"id": "missing-reverse", "file": "app/accounts.py", "machine": "accounts.status", "summary": "suspend_account exists, nothing reinstates; docs/rules.md says staff can reinstate"},
+    {"id": "side-effect-not-undone", "file": "app/documents.py", "machine": "documents.archived_at", "summary": "restore_document clears the document only; attachments stay archived"},
+    {"id": "stuck-state", "file": "app/tickets.py", "machine": "tickets.status", "summary": "'escalating' exits only via finish_escalation, which only an event handler calls and nothing publishes the event"},
+    {"id": "timer-not-enforced", "file": "app/review_links.py", "machine": "review_links.expires_at", "summary": "open_document_by_token never compares expires_at with now"},
+    {"id": "gate-missing", "file": "app/notifier.py", "machine": "loans.status", "summary": "send_overdue_notices selects by due_date only; closed loans still get notices"},
+    {"id": "no-db-guard", "file": "app/shipments.py", "machine": "shipments.status", "summary": "status is free TEXT with no CHECK and set_status writes whatever the scanner sends"}
+  ],
+  "decoys_clean": [
+    {"file": "app/subscriptions.py", "machine": "subscriptions.status", "traps": "canceled is final by design (rules.md); expiry enforced in is_entitled; guarded by CHECK; entitlements revoked on cancel"},
+    {"file": "app/invoices.py", "machine": "invoices.status", "traps": "void and paid have no exit by design; reminders are gated on 'issued'; CHECK present"}
+  ],
+  "scoring": "A planted bug counts as detected when a finding names the right file and describes the planted defect (not merely the same file). A finding on a decoy file that claims a defect the rules.md does not support is a false positive. Findings in other files are reviewed by hand and listed separately."
+}
