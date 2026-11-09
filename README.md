@@ -1,83 +1,60 @@
 # skills-for-agents
 
-Agent skills that make a coding agent check its own work the way a careful reviewer would.
+Agent skills that make a coding agent work the way a careful reviewer would. Each skill has an eval that compares it with no skill, and the numbers below include the ties.
 
-## state-machine-audit
+| Skill | What it does | Eval headline |
+|---|---|---|
+| [state-machine-audit](skills/state-machine-audit) | Finds hidden state machines (status columns, nullable timestamps, flags) and checks them for six bug shapes | Gain on one of six planted bugs; the rest tied |
+| [react-native-adaptive-layout](skills/react-native-adaptive-layout) | Makes a React Native or Expo app stop stretching on tablets and foldables | 16/16 vs about 9.5/16 |
+| [cookieyes-gtm-assessment](skills/cookieyes-gtm-assessment) | Diagnoses a CookieYes banner loaded through Google Tag Manager with Consent Mode v2 | 14/14 vs 12.5/14 (small) |
+| [skill-evals](skills/skill-evals) | Writes and runs skill evals with `claude plugin eval`, and avoids its traps | 15/15 vs 4/15 (least independent) |
+| [gemini-reference-images](skills/gemini-reference-images) | Generates images from reference images with Gemini and debugs empty results | 17/17 vs about 9.5/17 |
+| [css-scroll-driven-animations](skills/css-scroll-driven-animations) | Uses native CSS scroll-driven animations for parallax, reveals and progress bars | 15/15 vs 15/15 (no gain) |
 
-Many records move through states that nobody wrote down: a `status` column, a nullable `deleted_at` or `expires_at`, a flag. Each function is correct alone, so tests pass. The bugs hide in the edges between states. This skill makes an agent find every such record, write down its states and transitions, and check each one against six bug shapes.
+Eval scores count rubric points an answer earned. Full method, misses and limits are in `evals/<skill>/results.md`.
 
-It also covers the safe way to refactor this logic: pin every transition with a test first, then change the code.
+## Install
 
-### Install
+Add the marketplace once, then install what you want.
 
 ```
 /plugin marketplace add mattmuller/skills-for-agents
 /plugin install state-machine-audit@skills-for-agents
+/plugin install react-native-adaptive-layout@skills-for-agents
+/plugin install cookieyes-gtm-assessment@skills-for-agents
+/plugin install skill-evals@skills-for-agents
+/plugin install gemini-reference-images@skills-for-agents
+/plugin install css-scroll-driven-animations@skills-for-agents
 ```
 
-Or copy `skills/state-machine-audit` into `~/.claude/skills/`. It follows the Agent Skills format, so other agents can read the same folder.
+Or copy a folder from `skills/` into `~/.claude/skills/`. The folders follow the Agent Skills format, so other agents can read them.
 
-### Use it
+## state-machine-audit
 
-Ask in plain words:
+Finds every record whose behaviour depends on a status, a nullable timestamp or a flag, writes its states down, and checks six bug shapes. Also covers pin-then-refactor. On a small planted-bug app a plain agent found five of six shapes anyway; the skill's gain was the stuck state. One app, three runs per arm. Detail: `skills/state-machine-audit/README.md` and `evals/results.md`.
 
-```
-Audit this repo for state machines and the bugs in them.
-```
+## react-native-adaptive-layout
 
-### What you get
+One layout that stops stretching, not a tablet version: breakpoints from live width, a three-property content container, a table of what caps and what expands, and a rail-versus-bar pattern that avoids remounting on fold. Clear eval gain: baselines missed the container pattern, the orientation and native-tab traps, and tabletop posture. The device traps are the author's observations on one Expo SDK (dated in the skill); recheck them on yours.
 
-The agent writes each machine down, then lists findings with where, who can reach it, and how serious. A short example from the sample app in this repo:
+## cookieyes-gtm-assessment
 
-```
-Machine: loans.status
-  open -> overdue      nightly job
-  open/overdue -> closed   staff, when the book is returned
-  rule: closing a loan stops all notices
+A step-by-step check for double banners, late consent defaults, a second consent source, Consent Mode v2 signals and CSP. Small eval gain: plain agents already find the usual causes. The skill adds a checklist and a habit of saying what was not checked. It carries no account IDs; you supply your own container.
 
-Finding [Important] gate missing on one path
-  notifier.py:9  the nightly job selects by due date only.
-  Reach: every loan returned late. Up to three false notices each.
-  Fix: add status = 'overdue' to the query.
-```
+## skill-evals
 
-### The six bug shapes
+How to test whether a skill changes behaviour with `claude plugin eval`: read the delta, carry context in the prompt, include a control case, use pressure. It also lists four traps seen on CLI 2.1.278. The large gain is mostly those version-specific facts, which a model cannot guess. Recheck them on your CLI version.
 
-1. A forward move with no way back.
-2. A reverse move that forgets a side effect (restore leaves attachments archived).
-3. A state nothing can leave.
-4. An expiry that is stored but never checked.
-5. One code path that skips a check the others make.
-6. A status column that accepts any text.
+## gemini-reference-images
 
-### Does it work?
+Reference-image limits per Gemini model (dated 19 Sep 2026), the call shape, and six traps, notably that "no watermarks" can make the whole call refuse and that a refusal looks like an empty result. Clear eval gain. Both baselines advised the very wording the skill warns against. Nobody ran the API calls here.
 
-`evals/sample-app` is a small back office with each shape planted once and two clean state machines as decoys. The answer key is kept apart from what the agent reads. Three runs per arm, Sonnet 5.5, graded by hand. Numbers are bugs found out of 3 runs.
+## css-scroll-driven-animations
 
-| Planted bug | With skill | No skill |
-|---|---|---|
-| Missing reverse | 3 | 3 |
-| Side effect not undone | 3 | 3 |
-| Stuck state | 3 | 1 |
-| Expiry never checked | 3 | 3 |
-| Gate missing on one path | 3 | 3 |
-| No database guard | 3 | 3 |
+Native `animation-timeline` for scroll effects, with `overflow: hidden` freezing `view()`, the top-of-page range, and reduced-motion and fallback rules. No measured gain: Sonnet 5.5 already knew these on both test prompts. It may help weaker models; this eval does not show it.
 
-On this small app, a plain agent already finds five of six shapes every time. The skill's clear gain is the stuck state, which needs a check that the way out is reachable. Both arms also reported real minor gaps in the decoys. No run called a state that is final by design a bug. Details, and why the stuck-state row is the weakest evidence, are in `evals/results.md`.
+## Limits of all evals
 
-### Limits
-
-- Three runs per arm is a small sample, on one app, in Python and SQL.
-- The planted bugs and the skill have the same author.
-- The pin-then-refactor step was not evaluated.
-- The skill reads code. It does not run your app or see jobs and handlers outside the folders it reads.
-
-### Layout
-
-```
-skills/state-machine-audit/   SKILL.md and references/
-evals/                        sample app, answer key, run outputs, results
-.claude-plugin/               marketplace.json
-```
+Two to three runs per arm on one model, graded by the skill's author. Prompts target what each skill covers. Treat the numbers as a rough check, not a benchmark.
 
 MIT licence.

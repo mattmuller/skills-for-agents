@@ -1,14 +1,65 @@
 {
   "name": "skills-for-agents",
-  "owner": { "name": "mattmuller" },
-  "metadata": { "description": "Agent skills for auditing and changing code safely." },
+  "owner": {
+    "name": "mattmuller"
+  },
+  "metadata": {
+    "description": "Agent skills for auditing and changing code safely."
+  },
   "plugins": [
     {
       "name": "state-machine-audit",
       "description": "Find the implicit state machines in a codebase, write them down, and check them for six bug shapes.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/state-machine-audit"]
+      "skills": [
+        "./skills/state-machine-audit"
+      ]
+    },
+    {
+      "name": "react-native-adaptive-layout",
+      "description": "Adapt a React Native or Expo app to tablets and foldables: breakpoints, width caps, navigation rail, device traps.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/react-native-adaptive-layout"
+      ]
+    },
+    {
+      "name": "cookieyes-gtm-assessment",
+      "description": "Diagnose a CookieYes banner loaded through Google Tag Manager with Consent Mode v2.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/cookieyes-gtm-assessment"
+      ]
+    },
+    {
+      "name": "skill-evals",
+      "description": "Write and run eval suites for a skill with claude plugin eval, and avoid its observed traps.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/skill-evals"
+      ]
+    },
+    {
+      "name": "gemini-reference-images",
+      "description": "Generate images with Gemini from reference images and debug empty or refused calls.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/gemini-reference-images"
+      ]
+    },
+    {
+      "name": "css-scroll-driven-animations",
+      "description": "Use native CSS scroll-driven animations for parallax, reveals and progress bars, with the sharp edges.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/css-scroll-driven-animations"
+      ]
     }
   ]
 }
