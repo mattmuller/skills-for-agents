@@ -1,0 +1,1 @@
+I want one 4:5 social image that shows 6 different recurring characters (I have a portrait of each), 3 app screenshots on devices, and matches the style of 2 mood-board images. Plan how to do this with a Gemini image model: how many references to send and in what order, how to write the prompt, and what could go wrong in the result.
