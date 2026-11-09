@@ -12,7 +12,7 @@ It also covers the safe way to refactor this logic: pin every transition with a 
 
 ```
 /plugin marketplace add mattmuller/agent-skills
-/plugin install state-machine-audit@agent-skills
+/plugin install state-machine-audit@mattmuller-skills
 ```
 
 Or copy `skills/state-machine-audit` into `~/.claude/skills/`. It follows the Agent Skills format, so other agents can read the same folder.

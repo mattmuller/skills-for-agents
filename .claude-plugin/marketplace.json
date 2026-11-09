@@ -1,5 +1,5 @@
 {
-  "name": "agent-skills",
+  "name": "mattmuller-skills",
   "owner": { "name": "mattmuller" },
   "metadata": { "description": "Agent skills for auditing and changing code safely." },
   "plugins": [
