@@ -1,0 +1,1 @@
+In our Next.js App Router blog (mostly Server Components) I want article cards to fade and rise in as they scroll into view, plus a thin reading-progress bar at the top of article pages. I was going to use framer-motion and an Intersection Observer. Recommend an approach and give the code.
