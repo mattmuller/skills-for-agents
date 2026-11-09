@@ -2,16 +2,16 @@
 
 Agent skills that make a coding agent work the way a careful reviewer would. Each skill has an eval that compares it with no skill, and the numbers below include the ties.
 
-| Skill | What it does | Eval headline |
+| Skill | What it does | Test score: with skill vs without |
 |---|---|---|
-| [state-machine-audit](skills/state-machine-audit) | Finds hidden state machines (status columns, nullable timestamps, flags) and checks them for six bug shapes | Gain on one of six planted bugs; the rest tied |
-| [react-native-adaptive-layout](skills/react-native-adaptive-layout) | Makes a React Native or Expo app stop stretching on tablets and foldables | 16/16 vs about 9.5/16 |
-| [cookieyes-gtm-assessment](skills/cookieyes-gtm-assessment) | Diagnoses a CookieYes banner loaded through Google Tag Manager with Consent Mode v2 | 14/14 vs 12.5/14 (small) |
-| [skill-evals](skills/skill-evals) | Writes and runs skill evals with `claude plugin eval`, and avoids its traps | 15/15 vs 4/15 (least independent) |
-| [gemini-reference-images](skills/gemini-reference-images) | Generates images from reference images with Gemini and debugs empty results | 17/17 vs about 9.5/17 |
-| [css-scroll-driven-animations](skills/css-scroll-driven-animations) | Uses native CSS scroll-driven animations for parallax, reveals and progress bars | 15/15 vs 15/15 (no gain) |
+| [state-machine-audit](skills/state-machine-audit) | Finds hidden state machines (status columns, nullable timestamps, flags) and checks them for six bug shapes | 6 of 6 planted bugs vs 5 of 6 |
+| [react-native-adaptive-layout](skills/react-native-adaptive-layout) | Makes a React Native or Expo app stop stretching on tablets and foldables | 16 of 16 vs about 9.5 of 16 |
+| [cookieyes-gtm-assessment](skills/cookieyes-gtm-assessment) | Diagnoses a CookieYes banner loaded through Google Tag Manager with Consent Mode v2 | 14 of 14 vs 12.5 of 14 (small) |
+| [skill-evals](skills/skill-evals) | Writes and runs skill evals with `claude plugin eval`, and avoids its traps | 15 of 15 vs 4 of 15 (least independent) |
+| [gemini-reference-images](skills/gemini-reference-images) | Generates images from reference images with Gemini and debugs empty results | 17 of 17 vs about 9.5 of 17 |
+| [css-scroll-driven-animations](skills/css-scroll-driven-animations) | Uses native CSS scroll-driven animations for parallax, reveals and progress bars | 15 of 15 vs 15 of 15 (no gain) |
 
-Eval scores count rubric points an answer earned. Full method, misses and limits are in `evals/<skill>/results.md`.
+We gave Claude the same tasks with and without each skill and marked the answers against a checklist. The score is checklist points earned. Full method, misses and limits are in `evals/<skill>/results.md`.
 
 ## Install
 
