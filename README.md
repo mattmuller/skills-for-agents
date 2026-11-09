@@ -1,4 +1,4 @@
-# agent-skills
+# skills-for-agents
 
 Agent skills that make a coding agent check its own work the way a careful reviewer would.
 
@@ -11,7 +11,7 @@ It also covers the safe way to refactor this logic: pin every transition with a 
 ### Install
 
 ```
-/plugin marketplace add mattmuller/agent-skills
+/plugin marketplace add mattmuller/skills-for-agents
 /plugin install state-machine-audit@skills-for-agents
 ```
 
